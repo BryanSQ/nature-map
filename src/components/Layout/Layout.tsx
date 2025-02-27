@@ -4,9 +4,9 @@ interface layoutProps {
   children: ReactNode;
 }
 
-const Layout =({children}: layoutProps) => {
-  return(
-    <main className="main-app-layout">
+const Layout = ({ children }: layoutProps) => {
+  return (
+    <main className="app-layout">
       {children}
     </main>
   )
