@@ -1,12 +1,15 @@
+import { Link } from 'react-router-dom'
+
 import './LandingPage.css'
 
 export const LandingPage = () => {
     return (
-        <>
-            <header>
-                <nav>
-                    <li>Explore Costa Rica</li>
-                    <li>Your Favorite Locations</li>
+        <section className="landing-page">
+
+            <header className='landing-header'>
+                <nav className='landing-nav-list'>
+                    <Link className="landing-nav-link" to="/map">Explore Costa Rica</Link>
+                    <Link className="landing-nav-link" to="/favs">Your Favorite Locations</Link>
                 </nav>
             </header>
 
@@ -39,6 +42,6 @@ export const LandingPage = () => {
                 </section>
             </section>
 
-        </>
+        </section>
     )
 }

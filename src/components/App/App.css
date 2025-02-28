@@ -1,0 +1,20 @@
+.island {
+	display: flex;
+	flex-direction: column;
+
+	padding: 10px;
+
+	position: fixed;
+	left: 10px;
+	top: 10vh;
+	z-index: 1;
+
+	width: 300px;
+	height: 80vh;
+
+	/* background-color: rgba(0, 80, 40, 0.8); */
+	background-color: rgba(255, 255, 255, 1);
+	border-radius: 8px;
+
+	gap: 10px;
+}

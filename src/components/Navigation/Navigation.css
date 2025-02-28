@@ -1,0 +1,17 @@
+.nav-links {
+	display: flex;
+	gap: 2px;
+	justify-content: space-evenly;
+	align-items: center;
+	height: 20px;
+}
+
+.nav-links a {
+	display: flex;
+	text-align: center;
+	text-decoration: none;
+}
+
+.nav-links a:visited {
+	color: black;
+}
