@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useMap } from "./useMap";
-import { useMarkers } from "./useMarkers";
-
-import { addMarker } from "../utils/map";
+import { useMapMarker } from "./useMapMarker";
+// import { useMarkers } from "./useMarkers";
 
 export const useMapClick = () => {
 	const { map } = useMap();
-	const { setMarkers } = useMarkers();
+	// const { setMarkers } = useMarkers();
+	const { placeMarker } = useMapMarker();
 
 	useEffect(() => {
 		if (map === null) return;
@@ -14,13 +14,12 @@ export const useMapClick = () => {
 		const handleMapClick = async (e: google.maps.MapMouseEvent) => {
 			const coords = e.latLng;
 			if (coords) {
-				const newMarker = await addMarker(map, coords);
-				setMarkers((prev) => [...prev, newMarker]);
+				await placeMarker(coords);
 			}
 		};
 
 		map.addListener("click", handleMapClick);
 
 		return () => google.maps.event.clearListeners(map, "click");
-	}, [map, setMarkers]);
+	}, [map, placeMarker]);
 };

@@ -18,18 +18,20 @@ export const GoTo = () => {
     const { register, handleSubmit } = useForm<FormValue>();
 
     const { panAndZoom } = useMapMove();
-    const { placeMarker } = useMapMarker();
+    const { placeMarker, setMarkerTitle } = useMapMarker();
 
     const searchPlace: SubmitHandler<FormValue> = async (data) => {
         const { destination } = data;
 
         const geocodedDestination = await geocode(destination);
 
+        const { short_name: shortName } = geocodedDestination.address_components[0]
         const { location } = geocodedDestination.geometry;
 
         panAndZoom(location, 15);
-        placeMarker(location);
-
+        const newMarker = await placeMarker(location);
+        console.log(newMarker.googleMarker.title);
+        setMarkerTitle(newMarker.id, shortName);
     }
 
     return (

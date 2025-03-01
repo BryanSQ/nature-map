@@ -25,10 +25,9 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
         const transformMarkers = async () => {
             if (localMarkers.length > 0) {
                 if (map) {
-                    const appMarkers = localMarkers.map(async (marker: LocalMarker) => {
-                        return await addMarker(map, marker.position, marker.name);
-                    });
-                    setMarkers(await Promise.all(appMarkers));
+                    const convertedMarkers = localMarkers.map(async (marker: LocalMarker) => addMarker(map, marker.position));
+                    const solvedMarkers = await Promise.all(convertedMarkers);
+                    setMarkers(solvedMarkers);
                 }
             }
         };
@@ -36,8 +35,13 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
         transformMarkers();
     }, [map]);
 
+
+    // EL PROBLEMA QUE NO BORRA EL ULTIMO ESTA AQUI
     // biome-ignore lint: exhaustive-deps innecesary here
     useEffect(() => {
+
+        console.log(`HAY ${markers.length} MARCADORES`);
+
         if (markers.length === 0) return;
 
         const newLocalMarkers = markers.map((marker) => transformToLocalMarker(marker));

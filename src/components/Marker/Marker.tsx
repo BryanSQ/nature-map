@@ -2,7 +2,7 @@ import { MdLocationPin } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 
 import type { LocalMarker } from "../../types";
-import { useDeleteMarker } from "../../hooks";
+import { useMapMarker } from "../../hooks";
 
 import './Marker.css'
 
@@ -12,7 +12,8 @@ interface IMarkerProps {
 
 export const Marker = ({ marker }: IMarkerProps) => {
 
-    const deleteMarker = useDeleteMarker();
+    const { deleteMarker } = useMapMarker();
+
 
     return (
         <li className="marker">
