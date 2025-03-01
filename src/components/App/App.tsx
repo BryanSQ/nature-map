@@ -10,6 +10,7 @@ import { MdOutlineTravelExplore } from "react-icons/md";
 import "./App.css";
 import { MapProvider } from "../../contexts/Map";
 import { MarkerProvider } from "../../contexts/Marker";
+import { Place } from "../Place";
 
 export const App = () => {
     return (
@@ -29,6 +30,7 @@ export const App = () => {
                         </Navigation>
                         <GoTo />
                         <MarkerList />
+                        <Place />
                     </div>
                 </MarkerProvider>
             </MapProvider>
