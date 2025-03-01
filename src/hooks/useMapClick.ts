@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import { useMap } from "./useMap";
-import { useMapMarker } from "./useMapMarker";
-// import { useMarkers } from "./useMarkers";
+import { useMarkers } from "./useMarkers";
 
 export const useMapClick = () => {
 	const { map } = useMap();
-	// const { setMarkers } = useMarkers();
-	const { placeMarker } = useMapMarker();
+	const { placeMarker } = useMarkers();
 
 	useEffect(() => {
 		if (map === null) return;
