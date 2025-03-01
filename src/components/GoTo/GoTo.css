@@ -95,7 +95,7 @@ button {
 
 .Button:hover,
 .Button:focus {
-	background-color: rgb(0, 80, 40);
-	color: white;
+	background-color: rgb(0, 224, 112);
+	color: black;
 	transform: scale(1.05);
 }

@@ -2,6 +2,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import type { LocalMarker, Marker } from "../types";
 
+const MAP_API = import.meta.env.VITE_MAPS_API_KEY;
+
 async function initMap(mapId: string): Promise<google.maps.Map> {
 	const { Map: GMap } = (await google.maps.importLibrary(
 		"maps",
@@ -53,4 +55,44 @@ const transformToLocalMarker = (marker: Marker): LocalMarker | null => {
 	return null;
 };
 
-export { initMap, addMarker, transformToLocalMarker };
+const geocode = async (address: string) => {
+	const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${MAP_API}`;
+	try {
+		const response = await fetch(url);
+		if (!response.ok) {
+			throw new Error(`Response status: ${response.status}`);
+		}
+		const json = await response.json();
+		return json.results[0];
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error(error.message);
+		} else {
+			console.error(String(error));
+		}
+		return "Can't locate.";
+	}
+};
+
+const reverseGeocode = async (
+	position: google.maps.LatLngLiteral,
+): Promise<string> => {
+	const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.lat},${position.lng}&key=${MAP_API}`;
+	try {
+		const response = await fetch(url);
+		if (!response.ok) {
+			throw new Error(`Response status: ${response.status}`);
+		}
+		const json = await response.json();
+		return json.results;
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error(error.message);
+		} else {
+			console.error(String(error));
+		}
+		return "Can't locate.";
+	}
+};
+
+export { initMap, addMarker, transformToLocalMarker, reverseGeocode, geocode };
