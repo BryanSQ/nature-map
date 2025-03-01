@@ -43,7 +43,6 @@ const addMarker = async (
 
 const transformToLocalMarker = (marker: Marker): LocalMarker | null => {
 	const coords = marker.googleMarker.position;
-	console.log(marker.googleMarker.title);
 	if (coords) {
 		return {
 			id: marker.id,

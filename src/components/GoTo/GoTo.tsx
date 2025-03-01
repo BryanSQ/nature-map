@@ -8,62 +8,74 @@ import { useMapMove } from "../../hooks";
 import { useMarkers } from "../../hooks/useMarkers";
 
 import "./GoTo.css";
+import { useEffect } from "react";
 
 type FormValue = {
-	destination: string;
+    destination: string;
 };
 
 export const GoTo = () => {
-	const { register, handleSubmit } = useForm<FormValue>();
+    const { register, handleSubmit, reset, formState,
+    } = useForm<FormValue>();
 
-	const { panAndZoom } = useMapMove();
+    const { panAndZoom } = useMapMove();
 
-	const { placeMarker, setMarkerTitle } = useMarkers();
+    // const { placeMarker, setMarkerTitle } = useMarkers();
 
-	const searchPlace: SubmitHandler<FormValue> = async (data) => {
-		const { destination } = data;
+    const searchPlace: SubmitHandler<FormValue> = async (data) => {
+        const { destination } = data;
 
-		const geocodedDestination = await geocode(destination);
+        const geocodedDestination = await geocode(destination);
 
-		const { short_name: shortName } = geocodedDestination.address_components[0];
-		const { location } = geocodedDestination.geometry;
+        // const { short_name: shortName } = geocodedDestination.address_components[0];
+        const { location } = geocodedDestination.geometry;
 
-		panAndZoom(location, 15);
-		const newMarker = await placeMarker(location);
-		setMarkerTitle(newMarker.id, shortName);
-	};
+        panAndZoom(location, 15);
 
-	return (
-		<Form.Root className="FormRoot" onSubmit={handleSubmit(searchPlace)}>
-			<Form.Field className="FormField" name="goto">
-				<div className="form-info-container">
-					<Form.Label className="FormLabel">
-						Where do you want to go? 👀
-					</Form.Label>
-					<Form.Message className="FormMessage" match="valueMissing">
-						This field can't be empty.
-					</Form.Message>
-					<Form.Message className="FormMessage" match="typeMismatch">
-						Oops! We didn't expect that.
-					</Form.Message>
-				</div>
 
-				<Form.Control asChild>
-					<input
-						className="Input"
-						type="text"
-						required
-						placeholder="La Fortuna"
-						{...register("destination")}
-					/>
-				</Form.Control>
-			</Form.Field>
+        // desactivados para que el usuario decida donde poner el marcador
 
-			<Form.Submit asChild>
-				<button type="submit" className="Button" style={{ marginTop: 10 }}>
-					Let's Go!
-				</button>
-			</Form.Submit>
-		</Form.Root>
-	);
+        //const newMarker = await placeMarker(location);
+        //setMarkerTitle(newMarker.id, shortName);
+    };
+
+    useEffect(() => {
+        if (formState.isSubmitSuccessful) {
+            reset({ destination: "" })
+        }
+    }, [formState, reset])
+
+    return (
+        <Form.Root className="FormRoot" onSubmit={handleSubmit(searchPlace)}>
+            <Form.Field className="FormField" name="goto">
+                <div className="form-info-container">
+                    <Form.Label className="FormLabel">
+                        Where do you want to go? 👀
+                    </Form.Label>
+                    <Form.Message className="FormMessage" match="valueMissing">
+                        This field can't be empty.
+                    </Form.Message>
+                    <Form.Message className="FormMessage" match="typeMismatch">
+                        Oops! We didn't expect that.
+                    </Form.Message>
+                </div>
+
+                <Form.Control asChild>
+                    <input
+                        className="Input"
+                        type="text"
+                        required
+                        placeholder="La Fortuna"
+                        {...register("destination")}
+                    />
+                </Form.Control>
+            </Form.Field>
+
+            <Form.Submit asChild>
+                <button type="submit" className="Button" style={{ marginTop: 10 }}>
+                    Let's Go!
+                </button>
+            </Form.Submit>
+        </Form.Root>
+    );
 };

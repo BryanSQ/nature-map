@@ -8,7 +8,7 @@ export const LandingPage = () => {
 
             <header className='landing-header'>
                 <nav className='landing-nav-list'>
-                    <Link className="landing-nav-link" to="/map">Explore Costa Rica</Link>
+                    <Link className="landing-nav-link" to="/app">Explore Costa Rica</Link>
                     <Link className="landing-nav-link" to="/favs">Your Favorite Locations</Link>
                 </nav>
             </header>
