@@ -9,6 +9,7 @@ import { ChevronDownIcon, CheckIcon } from "@radix-ui/react-icons";
 import classnames from "classnames";
 
 import "./PlaceForm.css";
+import { useMarkers } from "../../../hooks/useMarkers";
 
 type FormValue = {
 	placeName: string;
@@ -27,8 +28,19 @@ export const PlaceForm = () => {
 		trigger,
 	} = useForm<FormValue>();
 
+	const { selectedMarker } = useMarkers();
+
 	const addNewPlace: SubmitHandler<FormValue> = async (data) => {
-		console.log("desde el dialog", data);
+		const markerWithPlace = {
+			...selectedMarker,
+			place: {
+				id: "1",
+				name: data.placeName,
+				category: data.placeCategory,
+				images: [],
+			},
+		};
+		console.log(markerWithPlace);
 	};
 
 	useEffect(() => {

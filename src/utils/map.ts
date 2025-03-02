@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-import type { LocalMarker, Marker } from "../types";
+import type { LocalMarker, Marker, MarkerWithPlace } from "../types";
 
 const MAP_API = import.meta.env.VITE_MAPS_API_KEY;
 
@@ -94,4 +94,27 @@ const reverseGeocode = async (
 	}
 };
 
-export { initMap, addMarker, transformToLocalMarker, reverseGeocode, geocode };
+const addPlaceToMarker = (
+	marker: Marker,
+	placeDetails: MarkerWithPlace["place"],
+): MarkerWithPlace => {
+	const place = {
+		id: uuidv4(),
+		name: placeDetails.name,
+		category: placeDetails.category,
+		images: [],
+	};
+	return {
+		...marker,
+		place,
+	};
+};
+
+export {
+	initMap,
+	addMarker,
+	transformToLocalMarker,
+	reverseGeocode,
+	geocode,
+	addPlaceToMarker,
+};

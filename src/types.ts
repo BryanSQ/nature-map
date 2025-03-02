@@ -14,3 +14,12 @@ export type LocalMarker = {
 	name: string;
 	position: google.maps.LatLngLiteral | google.maps.LatLng;
 };
+
+export type Place = {
+	id: string;
+	name: string;
+	category: string;
+	images: string[];
+};
+
+export type MarkerWithPlace = Marker & { place: Place };
