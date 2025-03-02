@@ -21,6 +21,12 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 
 	const [markers, setMarkers] = useState<Marker[]>([]);
 
+	const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
+
+	const selectMarker = (marker: Marker | null) => {
+		setSelectedMarker(marker);
+	};
+
 	const placeMarker = async (
 		position: google.maps.LatLng | google.maps.LatLngLiteral,
 	): Promise<Marker> => {
@@ -39,6 +45,8 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 			id: uuidv4(),
 			googleMarker: gMarker,
 		};
+
+		gMarker.addListener("gmp-click", () => selectMarker(newMarker));
 
 		setMarkers((prev) => {
 			const updatedMarkers = [...prev, newMarker];
@@ -63,8 +71,6 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 	};
 
 	const setMarkerTitle = (id: string, newTitle: string) => {
-		console.log("setMarkerTitle");
-
 		setMarkers((prev) => {
 			const updatedMarkers = prev.map((marker) => {
 				if (marker.id === id) {
@@ -103,7 +109,14 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 
 	return (
 		<MarkerContext.Provider
-			value={{ markers, placeMarker, deleteMarker, setMarkerTitle }}
+			value={{
+				markers,
+				placeMarker,
+				deleteMarker,
+				setMarkerTitle,
+				selectedMarker,
+				selectMarker,
+			}}
 		>
 			{children}
 		</MarkerContext.Provider>

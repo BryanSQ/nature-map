@@ -6,7 +6,34 @@ button {
 	box-sizing: border-box;
 }
 
-.form-info-container {
+
+
+.form-goto {
+	display: flex;
+	flex-direction: column;
+	padding: 5px;
+	border-radius: 8px;
+}
+
+.form-goto__field {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+
+.form-goto__label {
+	font-size: 15px;
+	font-weight: 500;
+	line-height: 35px;
+	color: black;
+}
+
+.form-goto__message {
+	font-size: 13px;
+	color: red;
+}
+
+.form-goto__info {
 	display: flex;
 	flex-direction: column;
 	padding: 5px;
@@ -14,33 +41,8 @@ button {
 	justify-content: space-between;
 }
 
-.FormRoot {
-	display: flex;
-	flex-direction: column;
-	padding: 5px;
-	border-radius: 8px;
-}
-
-.FormField {
-	display: flex;
-	flex-direction: column;
-	margin-bottom: 10px;
-}
-
-.FormLabel {
-	font-size: 15px;
-	font-weight: 500;
-	line-height: 35px;
-	color: black;
-}
-
-.FormMessage {
-	font-size: 13px;
-	color: red;
-}
-
-.Input,
-.Textarea {
+.form-goto__input,
+.form-goto__textarea {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -51,13 +53,13 @@ button {
 	box-shadow: 0 0 0 1px black;
 }
 
-.Input:hover,
-.Textarea:hover {
+.form-goto__input:hover,
+.form-goto_textarea:hover {
 	box-shadow: 0 0 0 1px black;
 }
 
-.Input:focus,
-.Textarea:focus {
+.form-goto__input:focus,
+.form-goto__textarea:focus {
 	box-shadow: 0 0 0 2px black;
 }
 
@@ -67,18 +69,18 @@ button {
 	color: black;
 } */
 
-.Input {
+.form-goto__input {
 	padding: 0 10px;
 	height: 35px;
 	line-height: 1;
 }
 
-.Textarea {
+.form-goto__textarea {
 	resize: none;
 	padding: 10px;
 }
 
-.Button {
+.form-goto__button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -93,8 +95,8 @@ button {
 	color: white;
 }
 
-.Button:hover,
-.Button:focus {
+.form-goto__button:hover,
+.form-goto__button:focus {
 	background-color: rgb(0, 224, 112);
 	color: black;
 	transform: scale(1.05);
