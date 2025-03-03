@@ -6,20 +6,19 @@ export interface IWindow {
 export type Marker = {
 	id: string;
 	googleMarker: google.maps.marker.AdvancedMarkerElement;
-	infoWindow?: IWindow;
+	place?: Place;
 };
 
 export type LocalMarker = {
 	id: string;
 	name: string;
 	position: google.maps.LatLngLiteral | google.maps.LatLng;
+	place?: Place;
 };
 
 export type Place = {
 	id: string;
 	name: string;
 	category: string;
-	images: string[];
+	images: { url: string }[];
 };
-
-export type MarkerWithPlace = Marker & { place: Place };

@@ -11,7 +11,7 @@ interface IMarkerProps {
 }
 
 export const Marker = ({ marker }: IMarkerProps) => {
-	const { deleteMarker } = useMarkers();
+	const { deleteMarker, selectDetailsMarker } = useMarkers();
 
 	return (
 		<li className="marker">
@@ -20,11 +20,14 @@ export const Marker = ({ marker }: IMarkerProps) => {
 				<button type="button" onClick={() => deleteMarker(marker.id)}>
 					<MdDelete />
 				</button>
+				<button type="button" onClick={() => selectDetailsMarker(marker)}>
+					See Details
+				</button>
 			</div>
 
 			<div className="marker-data">
 				<span>
-					{" "}
+					{marker.name}
 					<MdLocationPin /> San José
 				</span>
 			</div>

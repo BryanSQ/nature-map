@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import type { ReactNode } from "react";
-import type { LocalMarker, Marker } from "../../types";
+import type { LocalMarker, Marker, Place } from "../../types";
 
 import { MarkerContext } from "./MarkerContext";
 import { useLocalStorage, useMap } from "../../hooks";
@@ -23,11 +23,40 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 
 	const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
 
+	const [detailsPlace, setDetailsPlace] = useState<LocalMarker | null>(null);
+
+	const [filterCategories, setFilterCategories] = useState<string[]>([]);
+
+	// this is going to be used to render the markers according to the filters
+	const [currentMarkers, setCurrentMarkers] = useState<Marker[]>([]);
+
 	const selectMarker = (marker: Marker | null) => {
 		setSelectedMarker(marker);
 	};
 
-	const placeMarker = async (
+	const selectDetailsMarker = (marker: LocalMarker | null) => setDetailsPlace(marker);
+
+	const updateCategories = (newCategories: string[]) => {
+		setFilterCategories(newCategories);
+	}
+
+	const refreshMarkers = () => {
+
+		if (filterCategories.length === 0) {
+			setCurrentMarkers([...markers])
+			return;
+		}
+		const refreshedMarkers = markers.filter((marker) => marker.place && filterCategories.includes(marker.place.category))
+		setCurrentMarkers(refreshedMarkers);
+		return;
+	}
+
+	const renderMarkers = () => {
+		const notRendered = markers.map((marker) => !currentMarkers.includes(marker))
+		console.log(notRendered);
+	}
+
+	const addMarker = async (
 		position: google.maps.LatLng | google.maps.LatLngLiteral,
 	): Promise<Marker> => {
 		const { AdvancedMarkerElement } = (await google.maps.importLibrary(
@@ -80,7 +109,7 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 				return marker;
 			});
 
-			// 🔹 Guardar inmediatamente en localStorage después de actualizar el estado
+			// Guardar inmediatamente en localStorage después de actualizar el estado
 			const newLocalMarkers = updatedMarkers.map(transformToLocalMarker);
 			saveLocalStorageValue(newLocalMarkers);
 
@@ -88,16 +117,29 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 		});
 	};
 
+	const addPlaceToMarker = (markerId: string, newPlace: Place) => {
+		setMarkers((prev) => {
+			const updatedMarkers = prev.map((marker) => {
+				if (marker.id === markerId) {
+					marker.place = newPlace;
+					return { ...marker };
+				}
+				return marker;
+			});
+
+			const newLocalMarkers = updatedMarkers.map(transformToLocalMarker);
+			saveLocalStorageValue(newLocalMarkers);
+			return updatedMarkers;
+		})
+	}
+
 	// biome-ignore lint: exhaustive-deps innecesary here
 	useEffect(() => {
 		const transformMarkers = async () => {
 			if (localMarkers.length > 0 && map) {
-				console.log(
-					`VOY A CARGAR ${localMarkers.length} ${localMarkers.length === 1 ? "MARCADOR" : "MARCADORES"}`,
-				);
 				await Promise.all(
 					localMarkers.map(async (marker: LocalMarker) => {
-						const newMarker = await placeMarker(marker.position);
+						const newMarker = await addMarker(marker.position);
 						setMarkerTitle(newMarker.id, marker.name);
 					}),
 				);
@@ -107,15 +149,26 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 		transformMarkers();
 	}, [map]);
 
+	// biome-ignore lint: should not depend on refresh nor render
+	useEffect(() => {
+		refreshMarkers();
+		renderMarkers();
+	}, [filterCategories])
+
 	return (
 		<MarkerContext.Provider
 			value={{
 				markers,
-				placeMarker,
+				addMarker,
 				deleteMarker,
 				setMarkerTitle,
 				selectedMarker,
 				selectMarker,
+				addPlaceToMarker,
+				detailsPlace,
+				selectDetailsMarker,
+				filterCategories,
+				updateCategories,
 			}}
 		>
 			{children}

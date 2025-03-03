@@ -1,0 +1,10 @@
+.place-details {
+	display: flex;
+	position: fixed;
+	top: 50vh;
+	left: 50vw;
+	background-color: green;
+
+	width: 200px;
+	height: 200px;
+}

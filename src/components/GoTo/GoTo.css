@@ -6,8 +6,6 @@ button {
 	box-sizing: border-box;
 }
 
-
-
 .form-goto {
 	display: flex;
 	flex-direction: column;
@@ -63,12 +61,6 @@ button {
 	box-shadow: 0 0 0 2px black;
 }
 
-/* .Input::selection,
-.Textarea::selection {
-	background-color: white;
-	color: black;
-} */
-
 .form-goto__input {
 	padding: 0 10px;
 	height: 35px;
@@ -91,7 +83,7 @@ button {
 	font-weight: 500;
 	height: 35px;
 	width: 100%;
-	background-color: rgb(0, 80, 40);
+	background-color: #005028;
 	color: white;
 }
 

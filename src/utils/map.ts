@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-import type { LocalMarker, Marker, MarkerWithPlace } from "../types";
+import type { LocalMarker, Marker } from "../types";
 
 const MAP_API = import.meta.env.VITE_MAPS_API_KEY;
 
@@ -43,11 +43,13 @@ const addMarker = async (
 
 const transformToLocalMarker = (marker: Marker): LocalMarker | null => {
 	const coords = marker.googleMarker.position;
+	const place = marker.place;
 	if (coords) {
 		return {
 			id: marker.id,
 			name: marker.googleMarker.title,
 			position: coords,
+			place,
 		};
 	}
 
@@ -94,27 +96,4 @@ const reverseGeocode = async (
 	}
 };
 
-const addPlaceToMarker = (
-	marker: Marker,
-	placeDetails: MarkerWithPlace["place"],
-): MarkerWithPlace => {
-	const place = {
-		id: uuidv4(),
-		name: placeDetails.name,
-		category: placeDetails.category,
-		images: [],
-	};
-	return {
-		...marker,
-		place,
-	};
-};
-
-export {
-	initMap,
-	addMarker,
-	transformToLocalMarker,
-	reverseGeocode,
-	geocode,
-	addPlaceToMarker,
-};
+export { initMap, transformToLocalMarker, reverseGeocode, geocode };

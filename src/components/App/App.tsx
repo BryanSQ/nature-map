@@ -12,6 +12,8 @@ import { MarkerProvider } from "../../contexts/Marker";
 import { PlaceDialog } from "../Place";
 
 import "./App.css";
+import { PlaceDetails } from "../Place/PlaceDetails";
+import { Filter } from "../Filter/Filter";
 
 export const App = () => {
 	return (
@@ -30,8 +32,10 @@ export const App = () => {
 							</Link>
 						</Navigation>
 						<GoTo />
+						<Filter />
 						<MarkerList />
 						<PlaceDialog />
+						<PlaceDetails />
 					</div>
 				</MarkerProvider>
 			</MapProvider>

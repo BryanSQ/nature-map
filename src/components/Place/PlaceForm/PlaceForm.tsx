@@ -1,20 +1,23 @@
-import { useEffect, forwardRef } from "react";
+import { useEffect, forwardRef, useState } from "react";
 
-import { type SubmitHandler, useForm, Controller } from "react-hook-form";
+import { type SubmitHandler, useForm, Controller, useFieldArray } from "react-hook-form";
 
 import { Form, Select } from "radix-ui";
 
 import { ChevronDownIcon, CheckIcon } from "@radix-ui/react-icons";
 
 import classnames from "classnames";
+import { v4 as uuidv4 } from "uuid";
+
 
 import "./PlaceForm.css";
 import { useMarkers } from "../../../hooks/useMarkers";
+import type { Place } from "../../../types";
 
 type FormValue = {
 	placeName: string;
 	placeCategory: string;
-	placeImages: FileList;
+	placeImages: { url: string }[];
 };
 
 export const PlaceForm = () => {
@@ -26,26 +29,40 @@ export const PlaceForm = () => {
 		control,
 		setValue,
 		trigger,
-	} = useForm<FormValue>();
+	} = useForm({
+		defaultValues: {
+			placeName: '',
+			placeCategory: '',
+			placeImages: [{ url: '' }]
+		}
+	});
 
-	const { selectedMarker } = useMarkers();
 
-	const addNewPlace: SubmitHandler<FormValue> = async (data) => {
-		const markerWithPlace = {
-			...selectedMarker,
-			place: {
-				id: "1",
-				name: data.placeName,
-				category: data.placeCategory,
-				images: [],
-			},
-		};
-		console.log(markerWithPlace);
+	const { fields, append, remove } = useFieldArray({
+		control,
+		name: "placeImages"
+	});
+
+	const { selectedMarker, addPlaceToMarker } = useMarkers();
+
+	const addNewPlace = async (data: FormValue) => {
+		const newPlace: Place = {
+			id: uuidv4(),
+			name: data.placeName,
+			category: data.placeCategory,
+			images: data.placeImages,
+		}
+		console.log(data);
+
+		if (selectedMarker) {
+			addPlaceToMarker(selectedMarker?.id, newPlace);
+		}
+
 	};
 
 	useEffect(() => {
 		if (formState.isSubmitSuccessful) {
-			reset({ placeName: "", placeCategory: "", placeImages: undefined });
+			reset({ placeName: "", placeCategory: "", placeImages: [] });
 		}
 	}, [formState, reset]);
 
@@ -94,8 +111,8 @@ export const PlaceForm = () => {
 						<Select.Root
 							name="placeCategory"
 							value={value}
-							onValueChange={(newValue) => {
-								setValue("placeCategory", newValue, { shouldValidate: true });
+							onValueChange={(value) => {
+								setValue("placeCategory", value, { shouldValidate: true });
 								trigger("placeCategory");
 							}}
 						>
@@ -129,21 +146,29 @@ export const PlaceForm = () => {
 						Please, upload at least one image.
 					</Form.Message>
 				</div>
-				<Form.Control asChild>
-					<input
-						className="form-place__input"
-						type="file"
-						accept="image/*"
-						multiple
-						required
-						{...register("placeImages", {
-							required: "You must upload at least one image.",
-							validate: (files) =>
-								(files && files.length > 0) ||
-								"You must select at least one image.",
-						})}
-					/>
-				</Form.Control>
+				<ul>
+
+					{
+						fields.map((item, index) => (
+							<li key={item.id}>
+								<input
+									className="form-place__input"
+									type="text"
+									required
+									{...register(`placeImages.${index}.url`)}
+								/>
+								<button type="button" onClick={() => remove(index)}>Remove image URL</button>
+							</li>
+						))
+					}
+				</ul>
+
+				<button
+					type="button"
+					onClick={() => { append({ url: "" }) }}
+				>
+					Add image URL
+				</button>
 			</Form.Field>
 
 			<Form.Submit asChild>
