@@ -7,6 +7,7 @@ import { useMap } from "./useMap";
 export const useInitMap = (mapId: string) => {
 	const { setMap } = useMap();
 
+	// biome-ignore lint: react-hooks/exhaustive-deps
 	useEffect(() => {
 		const setNewMap = async () => {
 			try {
