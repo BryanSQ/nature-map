@@ -1,6 +1,6 @@
-import { useEffect, forwardRef, useState } from "react";
+import { useEffect, forwardRef } from "react";
 
-import { type SubmitHandler, useForm, Controller, useFieldArray } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 
 import { Form, Select } from "radix-ui";
 
@@ -8,7 +8,6 @@ import { ChevronDownIcon, CheckIcon } from "@radix-ui/react-icons";
 
 import classnames from "classnames";
 import { v4 as uuidv4 } from "uuid";
-
 
 import "./PlaceForm.css";
 import { useMarkers } from "../../../hooks/useMarkers";
@@ -31,19 +30,18 @@ export const PlaceForm = () => {
 		trigger,
 	} = useForm({
 		defaultValues: {
-			placeName: '',
-			placeCategory: '',
-			placeImages: [{ url: '' }]
-		}
+			placeName: "",
+			placeCategory: "",
+			placeImages: [{ url: "" }],
+		},
 	});
-
 
 	const { fields, append, remove } = useFieldArray({
 		control,
-		name: "placeImages"
+		name: "placeImages",
 	});
 
-	const { selectedMarker, addPlaceToMarker } = useMarkers();
+	const { selectedMarker, addPlaceToMarker, selectMarker } = useMarkers();
 
 	const addNewPlace = async (data: FormValue) => {
 		const newPlace: Place = {
@@ -51,13 +49,14 @@ export const PlaceForm = () => {
 			name: data.placeName,
 			category: data.placeCategory,
 			images: data.placeImages,
-		}
+		};
 		console.log(data);
 
 		if (selectedMarker) {
 			addPlaceToMarker(selectedMarker?.id, newPlace);
 		}
 
+		selectMarker(null);
 	};
 
 	useEffect(() => {
@@ -147,25 +146,26 @@ export const PlaceForm = () => {
 					</Form.Message>
 				</div>
 				<ul>
-
-					{
-						fields.map((item, index) => (
-							<li key={item.id}>
-								<input
-									className="form-place__input"
-									type="text"
-									required
-									{...register(`placeImages.${index}.url`)}
-								/>
-								<button type="button" onClick={() => remove(index)}>Remove image URL</button>
-							</li>
-						))
-					}
+					{fields.map((item, index) => (
+						<li key={item.id}>
+							<input
+								className="form-place__input"
+								type="text"
+								required
+								{...register(`placeImages.${index}.url`)}
+							/>
+							<button type="button" onClick={() => remove(index)}>
+								Remove image URL
+							</button>
+						</li>
+					))}
 				</ul>
 
 				<button
 					type="button"
-					onClick={() => { append({ url: "" }) }}
+					onClick={() => {
+						append({ url: "" });
+					}}
 				>
 					Add image URL
 				</button>

@@ -91,7 +91,7 @@ async function initMap(mapId: string): Promise<google.maps.Map> {
 	const initialMap = new GMap(
 		document.getElementById("google-map-container") as HTMLElement,
 		{
-			zoom: 8,
+			zoom: 12,
 			mapId,
 			center: { lat: 9.9725447, lng: -84.1963422 },
 			styles: mapStyles,

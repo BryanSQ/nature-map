@@ -13,12 +13,6 @@ export const PlaceDialog = () => {
 
 	return (
 		<Dialog.Root open={selectedMarker !== null}>
-			{/* <Dialog.Trigger asChild>
-			<button type="button" className="Button violet">
-				Edit profile
-			</button>
-		</Dialog.Trigger> */}
-
 			<Dialog.Portal>
 				<Dialog.Overlay className="DialogOverlay" />
 				<Dialog.Content className="DialogContent">
