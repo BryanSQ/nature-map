@@ -27,37 +27,20 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 
 	const [filterCategories, setFilterCategories] = useState<string[]>([]);
 
-	// this is going to be used to render the markers according to the filters
-	const [currentMarkers, setCurrentMarkers] = useState<Marker[]>([]);
-
 	const selectMarker = (marker: Marker | null) => {
 		setSelectedMarker(marker);
 	};
 
-	const selectDetailsMarker = (marker: LocalMarker | null) => setDetailsPlace(marker);
+	const selectDetailsMarker = (marker: LocalMarker | null) =>
+		setDetailsPlace(marker);
 
 	const updateCategories = (newCategories: string[]) => {
 		setFilterCategories(newCategories);
-	}
-
-	const refreshMarkers = () => {
-
-		if (filterCategories.length === 0) {
-			setCurrentMarkers([...markers])
-			return;
-		}
-		const refreshedMarkers = markers.filter((marker) => marker.place && filterCategories.includes(marker.place.category))
-		setCurrentMarkers(refreshedMarkers);
-		return;
-	}
-
-	const renderMarkers = () => {
-		const notRendered = markers.map((marker) => !currentMarkers.includes(marker))
-		console.log(notRendered);
-	}
+	};
 
 	const addMarker = async (
 		position: google.maps.LatLng | google.maps.LatLngLiteral,
+		place: Place | undefined = undefined,
 	): Promise<Marker> => {
 		const { AdvancedMarkerElement } = (await google.maps.importLibrary(
 			"marker",
@@ -70,10 +53,14 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 			position: position,
 		});
 
-		const newMarker = {
+		const newMarker: Marker = {
 			id: uuidv4(),
 			googleMarker: gMarker,
 		};
+
+		if (place) {
+			newMarker.place = place;
+		}
 
 		gMarker.addListener("gmp-click", () => selectMarker(newMarker));
 
@@ -130,8 +117,8 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 			const newLocalMarkers = updatedMarkers.map(transformToLocalMarker);
 			saveLocalStorageValue(newLocalMarkers);
 			return updatedMarkers;
-		})
-	}
+		});
+	};
 
 	// biome-ignore lint: exhaustive-deps innecesary here
 	useEffect(() => {
@@ -139,7 +126,7 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 			if (localMarkers.length > 0 && map) {
 				await Promise.all(
 					localMarkers.map(async (marker: LocalMarker) => {
-						const newMarker = await addMarker(marker.position);
+						const newMarker = await addMarker(marker.position, marker.place);
 						setMarkerTitle(newMarker.id, marker.name);
 					}),
 				);
@@ -149,11 +136,30 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 		transformMarkers();
 	}, [map]);
 
-	// biome-ignore lint: should not depend on refresh nor render
 	useEffect(() => {
-		refreshMarkers();
-		renderMarkers();
-	}, [filterCategories])
+		if (!map) return;
+
+		if (filterCategories.length === 0) {
+			console.log("No filter categories");
+			for (const marker of markers) {
+				marker.googleMarker.map = map;
+			}
+			return;
+		}
+
+		// Filtrar marcadores que coincidan con al menos una categoría
+		const refreshedMarkers = markers.filter(
+			(marker) =>
+				marker.place && filterCategories.includes(marker.place.category),
+		);
+
+		// Mostrar solo los marcadores filtrados
+		for (const marker of markers) {
+			marker.googleMarker.map = refreshedMarkers.includes(marker) ? map : null;
+		}
+
+		console.log("Filtered Markers:", refreshedMarkers);
+	}, [filterCategories, markers, map]);
 
 	return (
 		<MarkerContext.Provider
