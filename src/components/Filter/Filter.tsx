@@ -1,16 +1,14 @@
-import categories from "../../categories.json"
-import { FilterCheckbox } from "../FilterCheckbox"
+import categories from "../../categories.json";
+import { FilterCheckbox } from "../FilterCheckbox";
 
-import "./Filter.css"
+import "./Filter.css";
 
 export const Filter = () => {
-
-    return (
-        <div className="filter-container">
-            {
-                categories.map((category) => (<FilterCheckbox key={category} labelText={category} />)
-                )
-            }
-        </div>
-    )
-}
+	return (
+		<div className="filter-container">
+			{categories.map((category) => (
+				<FilterCheckbox key={category} labelText={category} />
+			))}
+		</div>
+	);
+};

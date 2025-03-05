@@ -9,6 +9,8 @@ import { transformToLocalMarker } from "../../utils/map";
 
 import { v4 as uuidv4 } from "uuid";
 
+import { images } from "../../images";
+
 interface MarkerProviderProps {
 	children: ReactNode;
 }
@@ -72,6 +74,14 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 		return newMarker;
 	};
 
+	const changeMarkerIcon = (marker: Marker) => {
+		const img = document.createElement("img");
+		if (marker.place && marker.place.category in images) {
+			img.src = images[marker.place.category as keyof typeof images];
+		}
+		marker.googleMarker.content = img;
+	};
+
 	const deleteMarker = (markerId: string) => {
 		const markerToDelete = markers.find((marker) => marker.id === markerId);
 		if (markerToDelete) {
@@ -127,6 +137,7 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 					localMarkers.map(async (marker: LocalMarker) => {
 						const newMarker = await addMarker(marker.position, marker.place);
 						setMarkerTitle(newMarker.id, marker.name);
+						changeMarkerIcon(newMarker);
 					}),
 				);
 			}
@@ -145,7 +156,7 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 			return;
 		}
 
-		// Filter at least one of the matching categories
+		// Filter markers with a place property and at least one matching category
 		const refreshedMarkers = markers.filter(
 			(marker) =>
 				marker.place && filterCategories.includes(marker.place.category),
@@ -153,9 +164,16 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 
 		// Show only filtered markers
 		for (const marker of markers) {
-			marker.googleMarker.map = refreshedMarkers.includes(marker) ? map : null;
+			marker.googleMarker.map =
+				marker.place && refreshedMarkers.includes(marker) ? map : null;
 		}
 
+		// Ensure markers without a place are always shown
+		for (const marker of markers) {
+			if (!marker.place) {
+				marker.googleMarker.map = map;
+			}
+		}
 	}, [filterCategories, markers, map]);
 
 	return (
@@ -172,6 +190,7 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 				selectDetailsMarker,
 				filterCategories,
 				updateCategories,
+				changeMarkerIcon,
 			}}
 		>
 			{children}

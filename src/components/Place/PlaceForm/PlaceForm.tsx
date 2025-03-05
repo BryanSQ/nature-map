@@ -9,26 +9,22 @@ import { ChevronDownIcon, CheckIcon } from "@radix-ui/react-icons";
 import classnames from "classnames";
 import { v4 as uuidv4 } from "uuid";
 
-import "./PlaceForm.css";
 import { useMarkers } from "../../../hooks/useMarkers";
 import type { Place } from "../../../types";
 import { reverseGeocode } from "../../../utils/map";
 
+import categories from "../../../categories.json";
+
+import "./PlaceForm.css";
 type FormValue = {
 	placeName: string;
 	placeCategory: string;
 	placeImages: { url: string }[];
-	placeDescription: string
+	placeDescription: string;
 };
 
 export const PlaceForm = () => {
-	const {
-		register,
-		handleSubmit,
-		reset,
-		formState,
-		control,
-	} = useForm({
+	const { register, handleSubmit, reset, formState, control } = useForm({
 		defaultValues: {
 			placeName: "",
 			placeCategory: "",
@@ -42,21 +38,22 @@ export const PlaceForm = () => {
 		name: "placeImages",
 	});
 
-	const { selectedMarker, addPlaceToMarker, selectMarker } = useMarkers();
-
-
+	const { selectedMarker, addPlaceToMarker, selectMarker, changeMarkerIcon } =
+		useMarkers();
 
 	const addNewPlace = async (data: FormValue) => {
-
 		if (selectedMarker?.googleMarker.position) {
-			const geocodedLocation = await reverseGeocode(selectedMarker?.googleMarker.position);
+			const geocodedLocation = await reverseGeocode(
+				selectedMarker?.googleMarker.position,
+			);
 
-			const { short_name: shortName } = geocodedLocation[0].address_components[1];
+			const { short_name: shortName } =
+				geocodedLocation[0].address_components[1];
 
-			const { short_name: administrativeLevel } = geocodedLocation[0].address_components[2];
+			const { short_name: administrativeLevel } =
+				geocodedLocation[0].address_components[2];
 
-			console.log(shortName, administrativeLevel);
-
+			const { formatted_address: formattedAddress } = geocodedLocation[0];
 
 			const newPlace: Place = {
 				id: uuidv4(),
@@ -64,24 +61,27 @@ export const PlaceForm = () => {
 				description: data.placeDescription,
 				category: data.placeCategory,
 				images: data.placeImages,
-				location: [shortName, administrativeLevel]
+				location: [shortName, administrativeLevel, formattedAddress],
 			};
 			console.log(newPlace);
 
 			if (selectedMarker) {
 				addPlaceToMarker(selectedMarker?.id, newPlace);
+				changeMarkerIcon(selectedMarker);
 			}
 
 			selectMarker(null);
 		}
-
-
-
 	};
 
 	useEffect(() => {
 		if (formState.isSubmitSuccessful) {
-			reset({ placeName: "", placeCategory: "", placeDescription: "", placeImages: [] });
+			reset({
+				placeName: "",
+				placeCategory: "",
+				placeDescription: "",
+				placeImages: [],
+			});
 		}
 	}, [formState, reset]);
 
@@ -92,9 +92,11 @@ export const PlaceForm = () => {
 					<Form.Label className="form-place__label">
 						Type this place's name
 					</Form.Label>
-					{formState.errors.placeName && <Form.Message className="form-place__message">
-						{formState.errors.placeName.message}
-					</Form.Message>}
+					{formState.errors.placeName && (
+						<Form.Message className="form-place__message">
+							{formState.errors.placeName.message}
+						</Form.Message>
+					)}
 				</div>
 
 				<Form.Control asChild>
@@ -102,7 +104,9 @@ export const PlaceForm = () => {
 						className="form-place__input"
 						type="text"
 						placeholder="Type the place name here"
-						{...register("placeName", { required: "This field can't be empty." })}
+						{...register("placeName", {
+							required: "This field can't be empty.",
+						})}
 					/>
 				</Form.Control>
 			</Form.Field>
@@ -112,9 +116,11 @@ export const PlaceForm = () => {
 					<Form.Label className="form-place__label">
 						Write something about this place
 					</Form.Label>
-					{formState.errors.placeDescription && <Form.Message className="form-place__message">
-						{formState.errors.placeDescription.message}
-					</Form.Message>}
+					{formState.errors.placeDescription && (
+						<Form.Message className="form-place__message">
+							{formState.errors.placeDescription.message}
+						</Form.Message>
+					)}
 				</div>
 
 				<Form.Control asChild>
@@ -122,7 +128,9 @@ export const PlaceForm = () => {
 						className="form-place__input"
 						type="text"
 						placeholder="Add a description..."
-						{...register("placeDescription", { required: "This field can't be empty." })}
+						{...register("placeDescription", {
+							required: "This field can't be empty.",
+						})}
 					/>
 				</Form.Control>
 			</Form.Field>
@@ -143,11 +151,7 @@ export const PlaceForm = () => {
 					name="placeCategory"
 					rules={{ required: "You must select a category." }}
 					render={({ field: { value, onChange, name } }) => (
-						<Select.Root
-							name={name}
-							value={value}
-							onValueChange={onChange}
-						>
+						<Select.Root name={name} value={value} onValueChange={onChange}>
 							<Select.Trigger className="form-place__select-trigger">
 								<Select.Value placeholder="Select a Category" />
 								<Select.Icon className="form-place__select-icon">
@@ -158,11 +162,11 @@ export const PlaceForm = () => {
 							<Select.Portal>
 								<Select.Content className="form-place__select-content">
 									<Select.Viewport className="form-place__select-viewport">
-										<SelectItem value="forest">Forest</SelectItem>
-										<SelectItem value="beach">Beach</SelectItem>
-										<SelectItem value="mountain">Mountain</SelectItem>
-										<SelectItem value="river">River</SelectItem>
-										<SelectItem value="lake">Lake</SelectItem>
+										{categories.map((category) => (
+											<SelectItem key={category} value={category}>
+												{category}
+											</SelectItem>
+										))}
 									</Select.Viewport>
 								</Select.Content>
 							</Select.Portal>
@@ -174,9 +178,11 @@ export const PlaceForm = () => {
 			<Form.Field className="form-place__field" name="placeImages">
 				<div className="form-place__info">
 					<Form.Label className="form-place__label">Upload image(s)</Form.Label>
-					{formState.errors.placeCategory && <Form.Message className="form-place__message">
-						Please, upload at least one image.
-					</Form.Message>}
+					{formState.errors.placeCategory && (
+						<Form.Message className="form-place__message">
+							Please, upload at least one image.
+						</Form.Message>
+					)}
 				</div>
 				<ul>
 					{fields.map((item, index) => (
@@ -184,10 +190,15 @@ export const PlaceForm = () => {
 							<input
 								className="form-place__input"
 								type="text"
-
-								{...register(`placeImages.${index}.url`, { required: "Requerido" })}
+								{...register(`placeImages.${index}.url`, {
+									required: "Requerido",
+								})}
 							/>
-							<button className="form-place__button--remove" type="button" onClick={() => remove(index)}>
+							<button
+								className="form-place__button--remove"
+								type="button"
+								onClick={() => remove(index)}
+							>
 								Remove image URL
 							</button>
 						</li>
@@ -203,7 +214,6 @@ export const PlaceForm = () => {
 				>
 					Add image URL
 				</button>
-
 			</Form.Field>
 
 			<Form.Submit asChild>

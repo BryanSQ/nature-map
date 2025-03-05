@@ -66,9 +66,10 @@
 }
 
 .marker__location {
-	display: flex;
-	justify-content: space-between;
 	color: white;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 
 	font-size: .7rem;
 }

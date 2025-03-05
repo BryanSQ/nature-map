@@ -17,6 +17,8 @@ interface IDefaultMarker {
 
 	filterCategories: string[];
 	updateCategories: (newCategories: string[]) => void;
+
+	changeMarkerIcon: (marker: Marker) => void;
 }
 
 const defaultValue: IDefaultMarker = {
@@ -33,6 +35,8 @@ const defaultValue: IDefaultMarker = {
 
 	filterCategories: [],
 	updateCategories: () => {},
+
+	changeMarkerIcon: () => {},
 };
 
 export const MarkerContext = createContext<IDefaultMarker>(defaultValue);
