@@ -1,7 +1,8 @@
 import { Checkbox } from "radix-ui";
 import { CheckIcon } from "@radix-ui/react-icons";
-import "./FilterCheckBox.css";
 import { useMarkers } from "../../hooks/useMarkers";
+
+import "./FilterCheckBox.css";
 
 
 interface IFilterCheckboxProps {
@@ -28,13 +29,10 @@ export const FilterCheckbox = ({ labelText }: IFilterCheckboxProps) => {
 
     return (
         <form>
-            <div style={{ display: "flex", alignItems: "center" }}>
-                <Checkbox.Root className="CheckboxRoot" id={labelText} onCheckedChange={update}>
-                    <Checkbox.Indicator className="CheckboxIndicator">
-                        <CheckIcon />
-                    </Checkbox.Indicator>
+            <div className="checkbox">
+                <Checkbox.Root id={labelText} onCheckedChange={update}>
                 </Checkbox.Root>
-                <label className="Label" htmlFor={labelText}>
+                <label className="checkbox__label" htmlFor={labelText}>
                     {labelText}
                 </label>
             </div>

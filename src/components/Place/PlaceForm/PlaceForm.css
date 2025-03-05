@@ -20,15 +20,14 @@
 
 .form-place__message {
 	font-size: 13px;
-	color: rgb(255, 238, 0);
+	color: var(--saffron);
 }
 
-.form-place__info{
+.form-place__info {
 	display: flex;
 	flex-direction: column;
 	padding: 5px 0;
 }
-
 
 .form-place__input,
 .form-place__textarea {
@@ -38,7 +37,7 @@
 	border-radius: 4px;
 	font-size: 15px;
 	color: black;
-	background-color: rgb(255, 255, 255);
+	background-color: white;
 	box-shadow: 0 0 0 1px black;
 }
 
@@ -69,7 +68,7 @@
 	padding: 10px;
 }
 
-.form-place__button {
+.form-place__button--accept {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -80,18 +79,49 @@
 	font-weight: 500;
 	height: 35px;
 	width: 100%;
-	background-color: rgb(0, 80, 40);
+	background-color: var(--saffron);
+	color: var(--night);
+	margin-top: 50px;
+}
+
+.form-place__button--accept:hover,
+.form-place__button--accept:focus {
+	transform: scale(1.01);
+}
+
+.form-place__button--add,
+.form-place__button--remove {
 	color: white;
+	border-radius: 8px;
+	border: 1px solid var(--saffron);
+	padding: 2px;
 }
 
-.form-place__button:hover,
-.form-place__button:focus {
-	background-color: rgb(0, 224, 112);
-	color: black;
-	transform: scale(1.05);
+.form-place__button--add {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
 }
 
+.form-place__button--remove {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
+.form-place__button--remove:hover,
+.form-place__button--remove:focus {
+	color: white;
+	border: 1px solid var(--dark-red);
+	background-color: var(--dark-red);
+}
+
+.form-place__url {
+	display: flex;
+	gap: 20px;
+	margin: 5px 0;
+}
 
 .form-place__select-trigger {
 	display: inline-flex;
@@ -104,30 +134,29 @@
 	height: 35px;
 	gap: 5px;
 	background-color: white;
-	color: green;
-	box-shadow: 0 2px 10px rgba(0,0,0, .7);
+	color: var(--night);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
 }
 .form-place__select-trigger:hover {
-	background-color: lime;
+	background-color: var(--saffron);
 }
 .form-place__select-trigger:focus {
-	box-shadow: 0 0 0 2px black;
+	box-shadow: 0 0 0 2px var(--night);
 }
 .form-place__select-trigger[data-placeholder] {
-	color: green;
+	color: var(--night);
 }
 
 .form-place__select-icon {
-	color: #005028;
+	color: var(--night);
 }
 
 .form-place__select-content {
 	overflow: hidden;
 	background-color: white;
-	border-radius: 6px;
-	box-shadow:
-		0px 10px 38px -10px rgba(22, 23, 24, 0.35),
-		0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+	border-radius: 8px;
+	box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px
+		rgba(22, 23, 24, 0.2);
 }
 
 .form-place__select-viewport {
@@ -137,7 +166,7 @@
 .form-place__select-item {
 	font-size: 13px;
 	line-height: 1;
-	color:#005028;
+	color: #005028;
 	border-radius: 3px;
 	display: flex;
 	align-items: center;
@@ -147,11 +176,11 @@
 	user-select: none;
 }
 .form-place__select-item[data-disabled] {
-	color: red;
+	color: var(slate-gray);
 	pointer-events: none;
 }
 .form-place__select-item[data-highlighted] {
 	outline: none;
-	background-color:yellow;
+	background-color: var(--saffron);
 	color: black;
 }

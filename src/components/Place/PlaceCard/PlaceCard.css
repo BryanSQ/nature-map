@@ -17,8 +17,20 @@
 	width: 100%;
 }
 
+.place-card__information {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
 .place-card__information-description {
-	font-size: 1.2rem;
+	font-size: 1rem;
+	text-align: left;
+	color: white;
+}
+
+.place-card__information-location {
+	font-size: 0.8;
 	color: white;
 }
 
@@ -29,5 +41,18 @@
 }
 
 .place-card__button {
-	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 2px;
+	color: var(--saffron);
+	border-radius: 8px;
+	padding: 10px;
+}
+
+.place-card__button:hover,
+.place-card__button:focus {
+	transform: scale(1.1);
+	color: var(--night);
+	background-color: var(--saffron);
 }

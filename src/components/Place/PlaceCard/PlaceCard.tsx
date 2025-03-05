@@ -1,4 +1,5 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { FaCarAlt } from "react-icons/fa";
 
 import type { LocalMarker } from "../../../types";
 
@@ -24,8 +25,8 @@ export const PlaceCard = ({ marker }: IPlaceCardProps) => {
                             <SwiperSlide key={image.url}>
                                 <img
                                     className='place-card__image'
-                                    alt="PLACE NAME"
-                                    src='https://images.pexels.com/photos/443446/pexels-photo-443446.jpeg'
+                                    alt={`Community provided photography of ${marker.name}`}
+                                    src={image.url}
                                 />
                             </SwiperSlide>))
                     }
@@ -38,14 +39,14 @@ export const PlaceCard = ({ marker }: IPlaceCardProps) => {
                         marker.place?.description
                     }
                 </p>
+                <p className='place-card__information-location'>
+                    {marker.place?.location[0]}, {marker.place?.location[1]}
+                </p>
             </section>
 
             <section className='place-card__button-container'>
                 <button type="button" className='place-card__button'>
-                    Take me there
-                </button>
-                <button type="button" className='place-card__button'>
-                    Other button
+                    See directions <FaCarAlt />
                 </button>
             </section>
 

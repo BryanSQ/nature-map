@@ -88,14 +88,16 @@ async function initMap(mapId: string): Promise<google.maps.Map> {
 		"maps",
 	)) as google.maps.MapsLibrary;
 
+	const { ColorScheme } = await google.maps.importLibrary("core");
+
 	const initialMap = new GMap(
 		document.getElementById("google-map-container") as HTMLElement,
 		{
 			zoom: 12,
 			mapId,
 			center: { lat: 9.9725447, lng: -84.1963422 },
-			styles: mapStyles,
 			disableDefaultUI: true,
+			colorScheme: ColorScheme.DARK,
 		},
 	);
 

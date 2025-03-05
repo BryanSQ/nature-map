@@ -40,11 +40,11 @@ export const Marker = ({ marker }: IMarkerProps) => {
 					{marker.place?.location[0]}, {marker.place?.location[1]}
 				</div>
 
-				<div className="marker__buttons">
-					<button type="button" onClick={() => deleteMarker(marker.id)}>
+				<div className="marker__button-container">
+					<button className="marker__button" type="button" onClick={() => deleteMarker(marker.id)}>
 						<MdDelete />
 					</button>
-					<button type="button" onClick={() => selectDetailsMarker(marker)}>
+					<button className="marker__button" type="button" onClick={() => selectDetailsMarker(marker)}>
 						<CgDetailsMore />
 					</button>
 				</div>

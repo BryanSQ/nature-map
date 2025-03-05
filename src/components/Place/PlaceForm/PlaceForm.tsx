@@ -180,14 +180,14 @@ export const PlaceForm = () => {
 				</div>
 				<ul>
 					{fields.map((item, index) => (
-						<li key={item.id}>
+						<li key={item.id} className="form-place__url">
 							<input
 								className="form-place__input"
 								type="text"
 
 								{...register(`placeImages.${index}.url`, { required: "Requerido" })}
 							/>
-							<button type="button" onClick={() => remove(index)}>
+							<button className="form-place__button--remove" type="button" onClick={() => remove(index)}>
 								Remove image URL
 							</button>
 						</li>
@@ -195,6 +195,7 @@ export const PlaceForm = () => {
 				</ul>
 
 				<button
+					className="form-place__button--add"
 					type="button"
 					onClick={() => {
 						append({ url: "" });
@@ -202,10 +203,11 @@ export const PlaceForm = () => {
 				>
 					Add image URL
 				</button>
+
 			</Form.Field>
 
 			<Form.Submit asChild>
-				<button type="submit" className="form-place__button">
+				<button type="submit" className="form-place__button--accept">
 					Save
 				</button>
 			</Form.Submit>

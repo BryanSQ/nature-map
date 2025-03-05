@@ -1,0 +1,18 @@
+.checkbox {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 2px;
+	border-radius: 8px;
+	color: var(--saffron);
+}
+
+.checkbox__indicator {
+	color: var(--saffron);
+	text-decoration: none;
+}
+
+.checkbox:has(input:checked) {
+	background-color: var(--saffron);
+	color: var(--night);
+}

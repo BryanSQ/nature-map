@@ -28,11 +28,23 @@
 	display: flex;
 }
 
-.marker__buttons {
+.marker__button-container {
 	display: flex;
 	justify-content: space-around;
-	font-size: 1rem;
+}
+
+.marker__button {
+	display: flex;
+	justify-content: center;
 	color: white;
+	width: 30px;
+	border-radius: 8px;
+}
+
+.marker__button:hover,
+.marker__button:focus {
+	transform: scale(1.1);
+	background-color: var(--saffron);
 }
 
 .marker-options {
