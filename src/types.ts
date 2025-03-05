@@ -19,6 +19,8 @@ export type LocalMarker = {
 export type Place = {
 	id: string;
 	name: string;
+	description: string;
 	category: string;
+	location: string[];
 	images: { url: string }[];
 };

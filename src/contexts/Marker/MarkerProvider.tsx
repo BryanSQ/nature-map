@@ -96,7 +96,6 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 				return marker;
 			});
 
-			// Guardar inmediatamente en localStorage después de actualizar el estado
 			const newLocalMarkers = updatedMarkers.map(transformToLocalMarker);
 			saveLocalStorageValue(newLocalMarkers);
 
@@ -140,25 +139,23 @@ export const MarkerProvider = ({ children }: MarkerProviderProps) => {
 		if (!map) return;
 
 		if (filterCategories.length === 0) {
-			console.log("No filter categories");
 			for (const marker of markers) {
 				marker.googleMarker.map = map;
 			}
 			return;
 		}
 
-		// Filtrar marcadores que coincidan con al menos una categoría
+		// Filter at least one of the matching categories
 		const refreshedMarkers = markers.filter(
 			(marker) =>
 				marker.place && filterCategories.includes(marker.place.category),
 		);
 
-		// Mostrar solo los marcadores filtrados
+		// Show only filtered markers
 		for (const marker of markers) {
 			marker.googleMarker.map = refreshedMarkers.includes(marker) ? map : null;
 		}
 
-		console.log("Filtered Markers:", refreshedMarkers);
 	}, [filterCategories, markers, map]);
 
 	return (

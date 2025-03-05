@@ -1,0 +1,33 @@
+.place-card {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 20px;
+}
+
+.place-card__carrousel {
+	display: flex;
+	align-items: center;
+	backdrop-filter: blur(5px);
+}
+
+.place-card__image {
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	width: 100%;
+}
+
+.place-card__information-description {
+	font-size: 1.2rem;
+	color: white;
+}
+
+.place-card__button-container {
+	display: flex;
+	justify-content: flex-end;
+	gap: 15px;
+}
+
+.place-card__button {
+	color: white;
+}

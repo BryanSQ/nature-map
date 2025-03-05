@@ -3,6 +3,7 @@ import { Dialog } from "radix-ui";
 
 import "./PlaceDetails.css"
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { PlaceCard } from "../PlaceCard";
 
 export const PlaceDetails = () => {
     const { detailsPlace, selectDetailsMarker } = useMarkers();
@@ -20,11 +21,9 @@ export const PlaceDetails = () => {
 
                     </Dialog.Description>
 
-                    <div>CARRUSEL AQUI 🏞️</div>
-                    <div>UBICACION 🗺️ {detailsPlace?.position.lat.toString()}</div>
-                    <div>
-                        CATEGORIA {detailsPlace?.place?.category}
-                    </div>
+                    {
+                        detailsPlace && <PlaceCard marker={detailsPlace} />
+                    }
 
                     <Dialog.Close asChild>
                         <button

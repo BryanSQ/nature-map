@@ -23,12 +23,12 @@ button {
 	font-size: 15px;
 	font-weight: 500;
 	line-height: 35px;
-	color: black;
+	color: white;
 }
 
 .form-goto__message {
 	font-size: 13px;
-	color: red;
+	color: var(--saffron);
 }
 
 .form-goto__info {
@@ -46,19 +46,19 @@ button {
 	justify-content: center;
 	border-radius: 4px;
 	font-size: 15px;
-	color: black;
-	background-color: rgba(169, 169, 169, 0.8);
-	box-shadow: 0 0 0 1px black;
+	color: var(--night);
+	background-color: white;
+	box-shadow: 0 0 0 1px var(--slate-gray);
 }
 
 .form-goto__input:hover,
 .form-goto_textarea:hover {
-	box-shadow: 0 0 0 1px black;
+	box-shadow: 0 0 0 1px var(--slate-gray);
 }
 
 .form-goto__input:focus,
 .form-goto__textarea:focus {
-	box-shadow: 0 0 0 2px black;
+	box-shadow: 0 0 0 1px var(--slate-gray);
 }
 
 .form-goto__input {
@@ -83,13 +83,11 @@ button {
 	font-weight: 500;
 	height: 35px;
 	width: 100%;
-	background-color: #005028;
-	color: white;
+	background-color: var(--saffron);
+	color: var(--night);
 }
 
 .form-goto__button:hover,
 .form-goto__button:focus {
-	background-color: rgb(0, 224, 112);
-	color: black;
 	transform: scale(1.05);
 }

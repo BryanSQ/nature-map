@@ -105,10 +105,11 @@ async function initMap(mapId: string): Promise<google.maps.Map> {
 const transformToLocalMarker = (marker: Marker): LocalMarker | null => {
 	const coords = marker.googleMarker.position;
 	const place = marker.place;
-	if (coords) {
+
+	if (coords && place) {
 		return {
 			id: marker.id,
-			name: marker.googleMarker.title,
+			name: place?.name,
 			position: coords,
 			place,
 		};
@@ -137,8 +138,8 @@ const geocode = async (address: string) => {
 };
 
 const reverseGeocode = async (
-	position: google.maps.LatLngLiteral,
-): Promise<string> => {
+	position: google.maps.LatLngLiteral | google.maps.LatLng,
+) => {
 	const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.lat},${position.lng}&key=${MAP_API}`;
 	try {
 		const response = await fetch(url);

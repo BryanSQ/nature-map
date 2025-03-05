@@ -1,13 +1,13 @@
 .DialogOverlay {
-	background-color: rgba(0,80, 40,0.2);
-  backdrop-filter: blur(3px);
+	background-color: rgba(0, 80, 40, 0.2);
+	backdrop-filter: blur(3px);
 	position: fixed;
 	inset: 0;
 	animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .DialogContent {
-	background-color: #005028;
+	background-color: var(--night);
 	border-radius: 8px;
 	box-shadow: #005028;
 	position: fixed;
@@ -40,7 +40,7 @@
 }
 
 .dialog-button-open {
-	background-color:violet;
+	background-color: violet;
 	color: pink;
 	outline-color: violet;
 }
@@ -66,16 +66,15 @@
 	top: 10px;
 	right: 10px;
 	background-color: rgb(255, 255, 255);
-  /* border: 2px solid #e63209; */
+	/* border: 2px solid #e63209; */
 }
 .IconButton:hover {
 	background-color: #e63209;
-  color: white;
+	color: white;
 }
 .IconButton:focus {
 	box-shadow: 0 0 0 2px #e63209;
 }
-
 
 @keyframes overlayShow {
 	from {

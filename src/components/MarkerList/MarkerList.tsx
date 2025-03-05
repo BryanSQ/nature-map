@@ -10,8 +10,9 @@ import "./MarkerList.css"
 
 export const MarkerList = () => {
     const [localMarkers, setLocalMarkers] = useState<LocalMarker[]>([]);
+    const [markersToShow, setMarkersToShow] = useState<LocalMarker[]>([]);
 
-    const { markers } = useMarkers();
+    const { markers, filterCategories } = useMarkers();
 
     useEffect(() => {
 
@@ -22,12 +23,22 @@ export const MarkerList = () => {
         setLocalMarkers(newLocalMarkers)
     }, [markers])
 
+    useEffect(() => {
+        if (filterCategories.length === 0) {
+            setMarkersToShow(localMarkers);
+            return;
+        }
+
+        const filteredMarkers = localMarkers.filter((marker) => marker.place && filterCategories.includes(marker.place.category));
+        setMarkersToShow(filteredMarkers);
+    }, [filterCategories, localMarkers])
+
     return (
         <ul className="marker-list">
             {
-                localMarkers.length > 0
+                markersToShow.length > 0
                     ? (
-                        localMarkers?.map((marker) => {
+                        markersToShow?.map((marker) => {
                             return (
                                 <Marker key={marker.id} marker={marker} />
                             )

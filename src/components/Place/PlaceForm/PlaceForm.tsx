@@ -12,11 +12,13 @@ import { v4 as uuidv4 } from "uuid";
 import "./PlaceForm.css";
 import { useMarkers } from "../../../hooks/useMarkers";
 import type { Place } from "../../../types";
+import { reverseGeocode } from "../../../utils/map";
 
 type FormValue = {
 	placeName: string;
 	placeCategory: string;
 	placeImages: { url: string }[];
+	placeDescription: string
 };
 
 export const PlaceForm = () => {
@@ -26,12 +28,11 @@ export const PlaceForm = () => {
 		reset,
 		formState,
 		control,
-		setValue,
-		trigger,
 	} = useForm({
 		defaultValues: {
 			placeName: "",
 			placeCategory: "",
+			placeDescription: "",
 			placeImages: [{ url: "" }],
 		},
 	});
@@ -43,25 +44,44 @@ export const PlaceForm = () => {
 
 	const { selectedMarker, addPlaceToMarker, selectMarker } = useMarkers();
 
-	const addNewPlace = async (data: FormValue) => {
-		const newPlace: Place = {
-			id: uuidv4(),
-			name: data.placeName,
-			category: data.placeCategory,
-			images: data.placeImages,
-		};
-		console.log(data);
 
-		if (selectedMarker) {
-			addPlaceToMarker(selectedMarker?.id, newPlace);
+
+	const addNewPlace = async (data: FormValue) => {
+
+		if (selectedMarker?.googleMarker.position) {
+			const geocodedLocation = await reverseGeocode(selectedMarker?.googleMarker.position);
+
+			const { short_name: shortName } = geocodedLocation[0].address_components[1];
+
+			const { short_name: administrativeLevel } = geocodedLocation[0].address_components[2];
+
+			console.log(shortName, administrativeLevel);
+
+
+			const newPlace: Place = {
+				id: uuidv4(),
+				name: data.placeName,
+				description: data.placeDescription,
+				category: data.placeCategory,
+				images: data.placeImages,
+				location: [shortName, administrativeLevel]
+			};
+			console.log(newPlace);
+
+			if (selectedMarker) {
+				addPlaceToMarker(selectedMarker?.id, newPlace);
+			}
+
+			selectMarker(null);
 		}
 
-		selectMarker(null);
+
+
 	};
 
 	useEffect(() => {
 		if (formState.isSubmitSuccessful) {
-			reset({ placeName: "", placeCategory: "", placeImages: [] });
+			reset({ placeName: "", placeCategory: "", placeDescription: "", placeImages: [] });
 		}
 	}, [formState, reset]);
 
@@ -72,21 +92,37 @@ export const PlaceForm = () => {
 					<Form.Label className="form-place__label">
 						Type this place's name
 					</Form.Label>
-					<Form.Message className="form-place__message" match="valueMissing">
-						This field can't be empty.
-					</Form.Message>
-					<Form.Message className="form-place__message" match="typeMismatch">
-						Oops! We didn't expect that.
-					</Form.Message>
+					{formState.errors.placeName && <Form.Message className="form-place__message">
+						{formState.errors.placeName.message}
+					</Form.Message>}
 				</div>
 
 				<Form.Control asChild>
 					<input
 						className="form-place__input"
 						type="text"
-						required
 						placeholder="Type the place name here"
-						{...register("placeName")}
+						{...register("placeName", { required: "This field can't be empty." })}
+					/>
+				</Form.Control>
+			</Form.Field>
+
+			<Form.Field className="form-place__field" name="placeDescription">
+				<div className="form-place__info">
+					<Form.Label className="form-place__label">
+						Write something about this place
+					</Form.Label>
+					{formState.errors.placeDescription && <Form.Message className="form-place__message">
+						{formState.errors.placeDescription.message}
+					</Form.Message>}
+				</div>
+
+				<Form.Control asChild>
+					<input
+						className="form-place__input"
+						type="text"
+						placeholder="Add a description..."
+						{...register("placeDescription", { required: "This field can't be empty." })}
 					/>
 				</Form.Control>
 			</Form.Field>
@@ -106,14 +142,11 @@ export const PlaceForm = () => {
 					control={control}
 					name="placeCategory"
 					rules={{ required: "You must select a category." }}
-					render={({ field: { value } }) => (
+					render={({ field: { value, onChange, name } }) => (
 						<Select.Root
-							name="placeCategory"
+							name={name}
 							value={value}
-							onValueChange={(value) => {
-								setValue("placeCategory", value, { shouldValidate: true });
-								trigger("placeCategory");
-							}}
+							onValueChange={onChange}
 						>
 							<Select.Trigger className="form-place__select-trigger">
 								<Select.Value placeholder="Select a Category" />
@@ -141,9 +174,9 @@ export const PlaceForm = () => {
 			<Form.Field className="form-place__field" name="placeImages">
 				<div className="form-place__info">
 					<Form.Label className="form-place__label">Upload image(s)</Form.Label>
-					<Form.Message className="form-place__message" match="valueMissing">
+					{formState.errors.placeCategory && <Form.Message className="form-place__message">
 						Please, upload at least one image.
-					</Form.Message>
+					</Form.Message>}
 				</div>
 				<ul>
 					{fields.map((item, index) => (
@@ -151,8 +184,8 @@ export const PlaceForm = () => {
 							<input
 								className="form-place__input"
 								type="text"
-								required
-								{...register(`placeImages.${index}.url`)}
+
+								{...register(`placeImages.${index}.url`, { required: "Requerido" })}
 							/>
 							<button type="button" onClick={() => remove(index)}>
 								Remove image URL

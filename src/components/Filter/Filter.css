@@ -1,8 +1,10 @@
 .filter-container {
 	display: flex;
-	border: 1px solid red;
 	flex-wrap: wrap;
-	gap: 5px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	height: 40px;
 }
 
 /* .input-container__label {
