@@ -1,5 +1,5 @@
 import { Checkbox } from "radix-ui";
-import { CheckIcon } from "@radix-ui/react-icons";
+
 import { useMarkers } from "../../hooks/useMarkers";
 
 import "./FilterCheckBox.css";
@@ -28,14 +28,12 @@ export const FilterCheckbox = ({ labelText }: IFilterCheckboxProps) => {
     }
 
     return (
-        <form>
-            <div className="checkbox">
-                <Checkbox.Root id={labelText} onCheckedChange={update}>
-                </Checkbox.Root>
-                <label className="checkbox__label" htmlFor={labelText}>
-                    {labelText}
-                </label>
-            </div>
-        </form>
+        <div className="checkbox">
+            <Checkbox.Root id={labelText} onCheckedChange={update} className="checkbox-root">
+            </Checkbox.Root>
+            <label className="checkbox__label" htmlFor={labelText}>
+                {labelText}
+            </label>
+        </div>
     );
 };

@@ -1,11 +1,13 @@
 import { MdLocationPin } from "react-icons/md";
 import { CgDetailsMore } from "react-icons/cg";
+import { MdCenterFocusWeak } from "react-icons/md";
 
 import { MdDelete } from "react-icons/md";
 
 
 import type { LocalMarker } from "../../types";
 import { useMarkers } from "../../hooks/useMarkers";
+import { useMapMove } from "../../hooks";
 
 import "./Marker.css";
 
@@ -15,8 +17,26 @@ interface IMarkerProps {
 
 export const Marker = ({ marker }: IMarkerProps) => {
 	const { deleteMarker, selectDetailsMarker } = useMarkers();
+	const { panAndZoom } = useMapMove();
 
-	console.log(marker.place?.location);
+
+	const formatLocation = () => {
+		if (marker.place?.location) {
+			const [shortName, administrativeLevel, formattedAddress] = marker.place.location;
+			let location = '';
+			if (shortName !== '' && administrativeLevel !== "") {
+				location = `${shortName}, ${administrativeLevel}`
+			}
+			if (shortName === '' && administrativeLevel === '' && formattedAddress !== '') {
+				location = formattedAddress
+			}
+			if (shortName === '' && administrativeLevel === '' && formattedAddress === '') {
+				location = 'Unknown Location';
+			}
+			return location;
+		}
+	}
+
 	return (
 		<li className="marker">
 
@@ -37,18 +57,21 @@ export const Marker = ({ marker }: IMarkerProps) => {
 
 				<div className="marker__location">
 					<MdLocationPin />
-					{marker.place?.location[0]}, {marker.place?.location[1]}
+					{formatLocation()}
 				</div>
 
-				<div className="marker__button-container">
-					<button className="marker__button" type="button" onClick={() => deleteMarker(marker.id)}>
-						<MdDelete />
-					</button>
-					<button className="marker__button" type="button" onClick={() => selectDetailsMarker(marker)}>
-						<CgDetailsMore />
-					</button>
-				</div>
+			</div>
 
+			<div className="marker__button-container">
+				<button className="marker__button" type="button" onClick={() => deleteMarker(marker.id)}>
+					<MdDelete />
+				</button>
+				<button className="marker__button" type="button" onClick={() => selectDetailsMarker(marker)}>
+					<CgDetailsMore />
+				</button>
+				<button className="marker__button" type="button" onClick={() => panAndZoom(marker.position, 15)}>
+					<MdCenterFocusWeak />
+				</button>
 			</div>
 
 		</li >

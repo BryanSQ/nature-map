@@ -1,15 +1,15 @@
 .marker {
 	display: flex;
-	justify-content: space-around;
-	padding: 5px;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	padding: 10px;
 	width: 95%;
-	height: 80px;
+	gap: 5px;
 
-	background-color: rgba(27, 27, 27, 0.5);
-	color: white;
+	background-color: white;
+	color: black;
 
 	/* border-radius: 8px; */
-
 	border-bottom: 1px solid var(--saffron);
 
 	/* border: 1px solid var(--saffron); */
@@ -17,10 +17,10 @@
 
 .marker__image {
 	display: flex;
-	height: 100%;
 	object-fit: cover;
 	aspect-ratio: 16 / 9;
 	border-radius: 8px;
+	width: 100%;
 	/* border: 1px solid red; */
 }
 
@@ -31,12 +31,13 @@
 .marker__button-container {
 	display: flex;
 	justify-content: space-around;
+	padding-bottom: 12px;
 }
 
 .marker__button {
 	display: flex;
 	justify-content: center;
-	color: white;
+	color: var(--saffron);
 	width: 30px;
 	border-radius: 8px;
 }
@@ -45,6 +46,7 @@
 .marker__button:focus {
 	transform: scale(1.1);
 	background-color: var(--saffron);
+	color: var(--night);
 }
 
 .marker-options {
@@ -56,17 +58,19 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	padding: 8px 12px;
+	gap: 5px;
 }
 
 .marker__title {
 	font-size: 1.3rem;
 	display: flex;
 	justify-content: space-between;
-	color: white;
+	color: black;
 }
 
 .marker__location {
-	color: white;
+	color: black;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;

@@ -22,6 +22,9 @@ export const App = () => {
 				<MarkerProvider>
 					<GoogleMap />
 					<div className="island">
+						<div className="app-title">
+							<p className="app-title__text">Leaf & Breeze</p>
+						</div>
 						<Navigation>
 							<Link to="/favorites">
 								Favorites

@@ -4,6 +4,7 @@
 	justify-content: space-evenly;
 	align-items: center;
 	height: 20px;
+	padding-top: 20px;
 }
 
 .nav-links a {
@@ -13,5 +14,5 @@
 }
 
 .nav-links a:visited {
-	color: white;
+	color: black;
 }

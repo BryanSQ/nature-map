@@ -1,3 +1,6 @@
+
+import { MdDelete } from "react-icons/md";
+
 import { useEffect, forwardRef } from "react";
 
 import { useForm, Controller, useFieldArray } from "react-hook-form";
@@ -47,13 +50,27 @@ export const PlaceForm = () => {
 				selectedMarker?.googleMarker.position,
 			);
 
-			const { short_name: shortName } =
-				geocodedLocation[0].address_components[1];
+			console.log(geocodedLocation);
 
-			const { short_name: administrativeLevel } =
-				geocodedLocation[0].address_components[2];
+			let shortName = "";
+			let administrativeLevel = "";
+			let formattedAddress = "";
 
-			const { formatted_address: formattedAddress } = geocodedLocation[0];
+			if (geocodedLocation[0].address_components.length > 1) {
+				if (geocodedLocation[0].address_components[1].short_name) {
+					shortName = geocodedLocation[0].address_components[1].short_name;
+				}
+
+				if (geocodedLocation[0].address_components[2].short_name) {
+					administrativeLevel = geocodedLocation[0].address_components[2].short_name;
+				}
+			}
+
+
+			if (geocodedLocation[0].formatted_address) {
+				formattedAddress = geocodedLocation[0].formatted_address;
+			}
+
 
 			const newPlace: Place = {
 				id: uuidv4(),
@@ -188,7 +205,7 @@ export const PlaceForm = () => {
 					{fields.map((item, index) => (
 						<li key={item.id} className="form-place__url">
 							<input
-								className="form-place__input"
+								className="form-place__input form-place__input-url"
 								type="text"
 								{...register(`placeImages.${index}.url`, {
 									required: "Requerido",
@@ -199,7 +216,7 @@ export const PlaceForm = () => {
 								type="button"
 								onClick={() => remove(index)}
 							>
-								Remove image URL
+								Remove URL <MdDelete />
 							</button>
 						</li>
 					))}

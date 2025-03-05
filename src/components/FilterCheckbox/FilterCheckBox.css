@@ -2,17 +2,27 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 2px;
-	border-radius: 8px;
+	padding: 10px;
+	border-radius: 16px;
 	color: var(--saffron);
+	border: 1px solid var(--saffron);
 }
 
-.checkbox__indicator {
-	color: var(--saffron);
-	text-decoration: none;
+.checkbox-root {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.checkbox:has(input:checked) {
+.checkbox:has(.checkbox-root[data-state="checked"]) {
 	background-color: var(--saffron);
-	color: var(--night);
+	color: white;
+}
+
+.checkbox:hover {
+	background-color: rgba(47, 116, 66, 0.3);
+}
+
+.checkbox:has(.checkbox-root:focus) {
+	background-color: rgba(47, 116, 66, 0.3);
 }

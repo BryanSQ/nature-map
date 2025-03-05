@@ -24,14 +24,14 @@
 }
 
 .place-card__information-description {
-	font-size: 1rem;
+	font-size: 1.3rem;
 	text-align: left;
-	color: white;
+	color: black;
 }
 
 .place-card__information-location {
-	font-size: 0.8;
-	color: white;
+	font-size: 0.6;
+	color: black;
 }
 
 .place-card__button-container {

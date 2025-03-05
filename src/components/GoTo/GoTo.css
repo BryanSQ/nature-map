@@ -23,7 +23,7 @@ button {
 	font-size: 15px;
 	font-weight: 500;
 	line-height: 35px;
-	color: white;
+	color: black;
 }
 
 .form-goto__message {
@@ -46,7 +46,7 @@ button {
 	justify-content: center;
 	border-radius: 4px;
 	font-size: 15px;
-	color: var(--night);
+	color: black;
 	background-color: white;
 	box-shadow: 0 0 0 1px var(--slate-gray);
 }
