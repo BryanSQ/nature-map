@@ -1,0 +1,30 @@
+.island {
+	display: flex;
+	flex-direction: column;
+
+	padding: 10px;
+
+	position: fixed;
+	left: 10px;
+	top: 10vh;
+
+	width: 25vw;
+	height: 80vh;
+
+	background-color: #f3f3f3;
+	backdrop-filter: blur(5px);
+	border-radius: 8px;
+	color: black;
+	gap: 10px;
+}
+
+.island-header {
+	display: flex;
+	justify-content: center;
+}
+
+.island-header__text {
+	font-size: 1.7rem;
+	font-weight: 600;
+	color: var(--saffron);
+}

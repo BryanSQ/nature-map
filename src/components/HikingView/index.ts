@@ -1,0 +1,1 @@
+export { HikingView } from "./HikingView";

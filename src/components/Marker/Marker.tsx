@@ -2,8 +2,6 @@ import { MdLocationPin } from "react-icons/md";
 import { CgDetailsMore } from "react-icons/cg";
 import { MdCenterFocusWeak } from "react-icons/md";
 
-import { MdDelete } from "react-icons/md";
-
 import type { LocalMarker } from "../../types";
 import { useMarkers } from "../../hooks/useMarkers";
 import { useMapMove } from "../../hooks";
@@ -66,14 +64,6 @@ export const Marker = ({ marker }: IMarkerProps) => {
 			</div>
 
 			<div className="marker__button-container">
-				{/* <button
-					className="marker__button"
-					type="button"
-					onClick={() => deleteMarker(marker.id)}
-				>
-					
-				</button> */}
-
 				<DeleteDialog buttonFunction={() => deleteMarker(marker.id)} />
 				<button
 					className="marker__button"
