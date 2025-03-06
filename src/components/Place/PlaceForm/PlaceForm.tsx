@@ -1,4 +1,3 @@
-
 import { MdDelete } from "react-icons/md";
 
 import { useEffect, forwardRef } from "react";
@@ -62,15 +61,14 @@ export const PlaceForm = () => {
 				}
 
 				if (geocodedLocation[0].address_components[2].short_name) {
-					administrativeLevel = geocodedLocation[0].address_components[2].short_name;
+					administrativeLevel =
+						geocodedLocation[0].address_components[2].short_name;
 				}
 			}
-
 
 			if (geocodedLocation[0].formatted_address) {
 				formattedAddress = geocodedLocation[0].formatted_address;
 			}
-
 
 			const newPlace: Place = {
 				id: uuidv4(),
@@ -88,6 +86,18 @@ export const PlaceForm = () => {
 			}
 
 			selectMarker(null);
+		}
+	};
+
+	const validateImageUrl = (value: string) => {
+		try {
+			const url = new URL(value);
+			if (!/\.(png|jpe?g|gif|webp|svg)$/i.test(url.pathname)) {
+				return "Please, enter a valid image URL.";
+			}
+			return true;
+		} catch {
+			return "Please, enter a valid URL.";
 		}
 	};
 
@@ -141,9 +151,8 @@ export const PlaceForm = () => {
 				</div>
 
 				<Form.Control asChild>
-					<input
-						className="form-place__input"
-						type="text"
+					<textarea
+						className="form-place__textarea "
 						placeholder="Add a description..."
 						{...register("placeDescription", {
 							required: "This field can't be empty.",
@@ -162,7 +171,6 @@ export const PlaceForm = () => {
 					)}
 				</div>
 
-				{/* ask Carlos how to validate this */}
 				<Controller
 					control={control}
 					name="placeCategory"
@@ -195,29 +203,32 @@ export const PlaceForm = () => {
 			<Form.Field className="form-place__field" name="placeImages">
 				<div className="form-place__info">
 					<Form.Label className="form-place__label">Upload image(s)</Form.Label>
-					{formState.errors.placeCategory && (
-						<Form.Message className="form-place__message">
-							Please, upload at least one image.
-						</Form.Message>
-					)}
 				</div>
 				<ul>
 					{fields.map((item, index) => (
-						<li key={item.id} className="form-place__url">
-							<input
-								className="form-place__input form-place__input-url"
-								type="text"
-								{...register(`placeImages.${index}.url`, {
-									required: "Requerido",
-								})}
-							/>
-							<button
-								className="form-place__button--remove"
-								type="button"
-								onClick={() => remove(index)}
-							>
-								Remove URL <MdDelete />
-							</button>
+						<li key={item.id}>
+							{formState.errors.placeImages?.[index]?.url && (
+								<Form.Message className="form-place__message">
+									{formState.errors.placeImages[index]?.url.message}
+								</Form.Message>
+							)}
+							<div className="form-place__url">
+								<input
+									className="form-place__input form-place__input-url"
+									type="url"
+									{...register(`placeImages.${index}.url`, {
+										required: "This field is required",
+										validate: validateImageUrl,
+									})}
+								/>
+								<button
+									className="form-place__button--remove"
+									type="button"
+									onClick={() => remove(index)}
+								>
+									Remove URL <MdDelete />
+								</button>
+							</div>
 						</li>
 					))}
 				</ul>

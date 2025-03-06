@@ -1,0 +1,88 @@
+.delete-dialog__overlay {
+  background-color: #f3f3f362;
+  backdrop-filter: blur(3px);
+  position: fixed;
+  inset: 0;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.delete-dialog__content {
+	background-color: var(--night);
+	border-radius: 6px;
+	box-shadow: var(--slate-gray);
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 90vw;
+	max-width: 500px;
+	max-height: 85vh;
+	padding: 25px;
+	animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.delete-dialog__content:focus {
+	outline: none;
+}
+
+.delete-dialog__title {
+	margin: 0;
+	color: var(--saffron);
+	font-size: 17px;
+	font-weight: 500;
+}
+
+.delete-dialog__description {
+	margin-bottom: 20px;
+	color: black;
+	font-size: 15px;
+	line-height: 1.5;
+}
+
+.delete-dialog__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	padding: 0 15px;
+	font-size: 15px;
+	line-height: 1;
+	font-weight: 500;
+	height: 35px;
+	user-select: none;
+}
+.delete-dialog__button:focus:not(:focus-visible) {
+	outline: 0;
+}
+.delete-dialog__button:focus-visible {
+	outline: 2px solid var(--slate-gray);
+	outline-offset: 1px;
+}
+.delete-dialog__button--green {
+	color: var(--saffron);
+	outline-color: var(--dark-red);
+  border-radius: 8px;
+  text-align: center;
+  width: 30px;
+}
+.delete-dialog__button--green:hover,
+.delete-dialog__button--green:focus { 
+	background-color: var(--saffron);
+  color: var(--night);
+  
+}
+.delete-dialog__button--red {
+	background-color: var(--dark-red);
+	color: white;
+	outline-color: var(--dark-red);
+}
+.delete-dialog__button--red:hover,
+.delete-dialog__button--red:focus {
+	background-color: #a0020a;
+}
+.delete-dialog__button--gray {
+	background-color: var(--slate-gray);
+	color: black;
+}
+.delete-dialog__button--gray:hover {
+	background-color: var(--slate-gray);
+}

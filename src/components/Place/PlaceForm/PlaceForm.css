@@ -20,7 +20,7 @@
 
 .form-place__message {
 	font-size: 13px;
-	color: var(--saffron);
+	color: var(--dark-red);
 }
 
 .form-place__info {
@@ -101,6 +101,8 @@
 	margin-top: 20px;
 	color: var(--saffron);
 	border: 1px solid var(--saffron);
+	width: 70%;
+
 }
 
 .form-place__button--remove {
